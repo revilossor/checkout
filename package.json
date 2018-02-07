@@ -4,12 +4,52 @@
   "description": "a checkout system",
   "main": "app/main.js",
   "scripts": {
-    "test": "jest"
+    "precommit": "npm run lint",
+    "prepush": "npm test",
+    "lint": "standard --fix",
+    "test": "npm run lint && jest",
+    "dev": "nodemon app/main.js"
   },
   "repository": {
     "type": "git",
     "url": ".."
   },
   "author": "oliver.ross@hotmail.com",
-  "license": "SEE LICENCE IN LICENCE"
+  "license": "SEE LICENCE IN LICENCE",
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "jest": "^22.2.1",
+    "nodemon": "^1.14.12",
+    "standard": "^10.0.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.0",
+    "express": "^4.16.2"
+  },
+  "standard": {
+    "globals": [
+      "expect",
+      "describe",
+      "beforeAll",
+      "beforeEach",
+      "afterAll",
+      "afterEach",
+      "it",
+      "test",
+      "jest"
+    ]
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverage": true,
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    }
+  }
 }
