@@ -3,6 +3,10 @@ const express = require('express')
 
 const mockApiRouter = jest.fn()
 const mockSession = jest.fn(() => (req, res, next) => { next() })
+const mockBodyParserJsonMiddleware = (req, res, next) => { next() }
+const mockBodyParser = {
+  json: jest.fn(() => mockBodyParserJsonMiddleware)
+}
 
 beforeAll(() => {
   jest.spyOn(dotenv, 'config')
@@ -11,6 +15,7 @@ beforeAll(() => {
   console.log = jest.fn()
   jest.mock('../app/router/api', () => mockApiRouter)
   jest.mock('express-session', () => mockSession)
+  jest.mock('body-parser', () => mockBodyParser)
   require('../app/main')
 })
 
@@ -20,6 +25,11 @@ it('loads environment from file', () => {
 
 it('uses session', () => {
   expect(mockSession).toHaveBeenCalled()
+})
+
+it('parses json', () => {
+  expect(mockBodyParser.json).toHaveBeenCalled()
+  expect(express.application.use).toHaveBeenCalledWith(mockBodyParserJsonMiddleware)
 })
 
 it('uses the api router on /api', () => {
