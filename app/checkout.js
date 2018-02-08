@@ -1,5 +1,5 @@
 module.exports = products => {
-  const getPriceList = product => { // TODO sort price list by price-per-unit...
+  const getPriceList = product => {
     const price = products.find(item => item.code === product).price
     return price.sort((a, b) => a.quantity < b.quantity)
   }

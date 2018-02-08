@@ -2,6 +2,7 @@ const dotenv = require('dotenv')
 const express = require('express')
 
 const mockApiRouter = jest.fn()
+const mockSession = jest.fn(() => (req, res, next) => { next() })
 
 beforeAll(() => {
   jest.spyOn(dotenv, 'config')
@@ -9,11 +10,16 @@ beforeAll(() => {
   jest.spyOn(express.application, 'use')
   console.log = jest.fn()
   jest.mock('../app/router/api', () => mockApiRouter)
+  jest.mock('express-session', () => mockSession)
   require('../app/main')
 })
 
 it('loads environment from file', () => {
   expect(dotenv.config).toHaveBeenCalled()
+})
+
+it('uses session', () => {
+  expect(mockSession).toHaveBeenCalled()
 })
 
 it('uses the api router on /api', () => {
